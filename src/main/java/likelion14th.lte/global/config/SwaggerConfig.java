@@ -33,9 +33,7 @@ public class SwaggerConfig {
 
         Server localServer = new Server()
                 .url("http://localhost:8080")
-                .description("Local Server");
-
-        // 나중에 배포 후에는 또 만들어서 아래 List 안에 넣어주기
+                .description("Lte Local Server");
 
         return new OpenAPI()
                 .info(apiInfo)
