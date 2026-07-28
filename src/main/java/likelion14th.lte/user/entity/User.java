@@ -2,18 +2,18 @@ package likelion14th.lte.user.entity;
 
 import jakarta.persistence.*;
 import likelion14th.lte.Entity.BaseEntity;
+import likelion14th.lte.statistic.entity.Statistic;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -33,14 +33,19 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String s3ImageKey;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "statistic_id")
+    private Statistic statistic;
+
     @Builder(access = AccessLevel.PUBLIC)
-    private User (String username, String userTag, String introduction){
+    private User(String username, String userTag, String introduction) {
         this.username = username;
         this.userTag = userTag;
         this.introduction = introduction;
+        this.statistic = Statistic.create(); // 유저 생성 시 통계 자동 초기화
     }
 
-    public void updateIntroduction(String introduction){
+    public void updateIntroduction(String introduction) {
         this.introduction = introduction;
     }
 }
