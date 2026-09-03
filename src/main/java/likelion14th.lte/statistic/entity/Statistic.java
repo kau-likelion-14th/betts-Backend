@@ -46,8 +46,9 @@ public class Statistic {
 
     public WeekEnum getMostTodoWeek() {
         return statWeeks.stream()
+                .filter(sw -> sw.getCount() > 0)  // ← count가 0인 요일 제외
                 .max(Comparator.comparingInt(StatWeek::getCount))
-                .map(likelion14th.lte.statistic.entity.StatWeek::getWeek)
+                .map(StatWeek::getWeek)
                 .orElse(null);
     }
 
