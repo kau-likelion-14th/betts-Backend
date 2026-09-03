@@ -46,10 +46,13 @@ public class StatisticService {
         statistic.increaseStreakIfSuccess(isSuccess);
 
         if (isSuccess) {
-            statistic.getStatWeeks().stream()
+            StatWeek targetWeek = statistic.getStatWeeks().stream()
                     .filter(w -> w.getWeek().toDayOfWeek() == yesterday.getDayOfWeek())
                     .findFirst()
-                    .ifPresent(StatWeek::increaseCount);
+                    .orElseThrow(() -> new GeneralException(ErrorCode.STAT_WEEK_NOT_FOUND));
+            // 해당 요일 StatWeek가 없으면 즉시 예외 발생
+
+            targetWeek.increaseCount();
         }
 
         LocalDate thirtyDaysAgo = yesterday.minusDays(30);
