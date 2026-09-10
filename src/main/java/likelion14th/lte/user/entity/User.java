@@ -3,10 +3,14 @@ package likelion14th.lte.user.entity;
 import jakarta.persistence.*;
 import likelion14th.lte.Entity.BaseEntity;
 import likelion14th.lte.statistic.entity.Statistic;
+import likelion14th.lte.youtube.domain.SavedSong;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,12 +41,16 @@ public class User extends BaseEntity {
     @JoinColumn(name = "statistic_id")
     private Statistic statistic;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavedSong> savedSongs;
+
     @Builder(access = AccessLevel.PUBLIC)
     private User(String username, String userTag, String introduction) {
         this.username = username;
         this.userTag = userTag;
         this.introduction = introduction;
         this.statistic = Statistic.create(); // 유저 생성 시 통계 자동 초기화
+        this.savedSongs = new ArrayList<>();
     }
 
     public void updateIntroduction(String introduction) {
