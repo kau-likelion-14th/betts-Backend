@@ -13,6 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findById(Long id);
 
     Optional<User> findByUserTag(String userTag);
+    Optional<User> findByProviderId(String providerId);
 
     Page<User> findByUsernameContainingIgnoreCase(String username, Pageable pageable);
 

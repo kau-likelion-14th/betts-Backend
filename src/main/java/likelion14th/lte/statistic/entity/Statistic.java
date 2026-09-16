@@ -1,7 +1,6 @@
 package likelion14th.lte.statistic.entity;
 
 import jakarta.persistence.*;
-import likelion14th.lte.statistic.entity.StatWeek;
 import likelion14th.lte.todo.entity.WeekEnum;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,6 +18,7 @@ public class Statistic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "statistic_id")
     private Long id;
 
     @Column(nullable = false)
@@ -46,7 +46,7 @@ public class Statistic {
 
     public WeekEnum getMostTodoWeek() {
         return statWeeks.stream()
-                .filter(sw -> sw.getCount() > 0)  // ← count가 0인 요일 제외
+                .filter(sw -> sw.getCount() > 0)
                 .max(Comparator.comparingInt(StatWeek::getCount))
                 .map(StatWeek::getWeek)
                 .orElse(null);
