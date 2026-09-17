@@ -2,6 +2,8 @@ package likelion14th.lte.user.entity;
 
 import jakarta.persistence.*;
 import likelion14th.lte.Entity.BaseEntity;
+import likelion14th.lte.follow.entity.Follow;
+import likelion14th.lte.login.domain.RefreshToken;
 import likelion14th.lte.statistic.entity.Statistic;
 import likelion14th.lte.youtube.domain.SavedSong;
 import lombok.AccessLevel;
@@ -19,8 +21,11 @@ import java.util.List;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
+    private String providerId;
 
     @Column(nullable = false)
     private String username;
@@ -37,20 +42,32 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String s3ImageKey;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "statistic_id")
-    private Statistic statistic;
+    @OneToMany(mappedBy = "toUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followers;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "fromUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> followings;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SavedSong> savedSongs;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private RefreshToken refreshToken;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "statistic_id", nullable = false)
+    private Statistic statistic;
+
     @Builder(access = AccessLevel.PUBLIC)
-    private User(String username, String userTag, String introduction) {
+    private User(String providerId, String username, String userTag, String introduction) {
+        this.providerId = providerId;
         this.username = username;
         this.userTag = userTag;
         this.introduction = introduction;
-        this.statistic = Statistic.create(); // 유저 생성 시 통계 자동 초기화
+        this.followers = new ArrayList<>();
+        this.followings = new ArrayList<>();
         this.savedSongs = new ArrayList<>();
+        this.statistic = Statistic.create();
     }
 
     public void updateIntroduction(String introduction) {
