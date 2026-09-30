@@ -57,7 +57,7 @@ kakao:
   user-info-uri: https://kapi.kakao.com/v2/user/me
 
 jwt:
-  secret: "likelion14th-lte-jwt-secret-key-2024"
+  secret: ${JWT_SECRET}
   access-exp-ms: ${JWT_EXPIRATION:3600000}
   refresh-exp-ms: ${JWT_REFRESH_EXPIRATION:1209600000}
 
