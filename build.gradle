@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
 	// spring
-	//implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 
@@ -28,7 +28,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 
 	//db
-	//runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -64,13 +64,34 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
 	//test
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+
+//aws
+	implementation platform('software.amazon.awssdk:bom:2.25.60')
+	implementation 'software.amazon.awssdk:s3'
+	implementation "software.amazon.awssdk:auth"
+	implementation "software.amazon.awssdk:sts"
+
+//이미지 검증 라이브러리
+	implementation 'org.apache.tika:tika-core:3.2.2'
+	implementation "net.coobird:thumbnailator:0.4.20"
+	implementation "com.twelvemonkeys.imageio:imageio-webp:3.10.1"
+	implementation "com.twelvemonkeys.imageio:imageio-core:3.10.1"
 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('jar') {
+	enabled = false
 }
