@@ -32,7 +32,7 @@ public class S3Utils {
         return UUID.randomUUID()+ "-" + fileName;
     }
     private String getUrl(String key){
-        return "https://"+config.getBucket()+".S3."+config.getRegion()+".amazon.com/"+key;
+        return "https://"+config.getBucket()+".s3."+config.getRegion()+".amazonaws.com/"+key;
     }
 
     public  S3Dto uploadFile(MultipartFile file){
